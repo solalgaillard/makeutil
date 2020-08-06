@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
 
 # define MAXNOM 3000            /* nbre max. de noms (variables+fonctions) */
 # define MAXEXPR 1000           /* nbre max. d'expresions par fonction */
@@ -158,6 +161,57 @@ void insert(char * key, struct value * value, struct linkedList * hashTable[]) {
         hashTable[hashIndex] = item;
     }
 }
+
+
+
+char * getVariablesResolved(char * token) {
+    char buffer[SIZE];
+    struct value * nestedResult = search(token, variablesHash);
+    struct tokenList * tokensInVariable = nestedResult->tokensInVariable;
+    for(int i=0; i<tokensInVariable->count; i++) {
+        char * variableToken = tokensInVariable->tokens[i]->value;
+        int variableTokenLevel = tokensInVariable->tokens[i]->variableLevel;
+        if(variableTokenLevel){
+            printf("TEST%d", variableTokenLevel);
+            variableToken = getVariablesResolved(variableToken);
+        }
+        sprintf(buffer, " %s", variableToken);
+    }
+
+    return strdup(buffer);
+}
+
+//string array for all dependencies
+void getDependenciesResolved(struct tokenList * dependencies, char ** buffer) {
+    for(int i=0; i < dependencies->count; i++) {
+        char * token = dependencies->tokens[i]->value;
+        int isVar = dependencies->tokens[i]->variableLevel;
+        if(isVar){
+            printf("TEST%d", isVar);
+            token = getVariablesResolved(token);
+        }
+        buffer[i] = token;
+    }
+}
+
+char * getcmdsResolved(struct tokenList * callableCmds) {
+    char buffer[SIZE];
+    for(int i=0; i < callableCmds->count; i++) {
+        char * token = callableCmds->tokens[i]->value;
+        int isVar = callableCmds->tokens[i]->variableLevel;
+        if(isVar){
+            token = getVariablesResolved(token);
+        }
+        sprintf(buffer, " %s", token);
+    }
+    return strdup(buffer);
+}
+
+/*
+void callCommmands(dependencies needed resolved, cmds resolved) {
+
+}
+ */
 
 /*
 

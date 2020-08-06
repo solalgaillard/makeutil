@@ -120,27 +120,27 @@ main(int argc, char *argv[]){
 
         yyin = fopen(fullpath, "r");
         yyparse();
-        free(fullpath);
+        memset(fullpath, '\0', (strlen(cwd)+10) * sizeof(char));
 
         printf("\n%s\n", firstCommand);
 
         struct value * result = search(firstCommand, cmdsHash);
-
+        char * dependenciesResolved[1024] = {NULL};
         struct tokenList * dependencies = result->cmd->dependencies;
-        //struct tokenList * callableCmds = result->cmd->callableCmds;
+        getDependenciesResolved(dependencies, dependenciesResolved);
         int i = 0;
-        for(i=0; i < dependencies->count; i++) {
-            token = tokens[i];
-            char * token = dependencies->tokens[i]->value;
-            int isVar = dependencies->tokens[i]->variableLevel;
-            if(isVar){
-                struct value * nestedResult = search(token, variablesHash);
-                struct tokenList * tokensInVariable = result->tokensInVariable;
-                //RECURSION ICI
-                
-            }
-            printf("\n%s\n", token->value);
+        while(dependenciesResolved[i]){
+            printf("\n%s\n", dependenciesResolved[i]);
+            struct stat attrib;
+            char * fullpath = (char*) malloc((strlen(cwd)+10)*sizeof(char));
+            sprintf(fullpath, "%s/%s", cwd, firstCommand);
+            printf("%s\n", fullpath);
+            stat(fullpath, &attrib);
+            printf("%ld", attrib.st_mtime);
+            i++;
         }
+
+        //struct tokenList * callableCmds = result->cmd->callableCmds;
 
 
         printf("find dependencies");

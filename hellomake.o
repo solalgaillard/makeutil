@@ -1,0 +1,53 @@
+
+
+
+
+
+
+
+
+(c) Jean Méhat, 1990-96
+Département MIME, université de Paris 8, 2 rue de la liberté
+St Denis, 93526 cedex 02, France
+jm@ai.univ-paris8.fr ou jem@mygale.org
+
+     This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+     This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+     You should have received a copy of the GNU General Public License
+   along with this program; since not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+Ppcm est un (tout petit) compilateur pour un langage très simple
+avec tests, boucles, et fonctions. Le code produit est du 80386
+au format accepté par l'assembleur de linux. La discipline d'appel
+de fonctions est compatible avec celles du compilateur gcc.
+
+Au prix d'une légère augmentation de la taille, il serait possible
+d'ajouter des fonctionnalités ou de remédier à des déficiences :
+ - supprimer les constantes arbitraires définies dans ppcm.h grace à malloc
+ - améliorer le traitement des erreurs dans les programmes traités
+
+ - porter sur d'autres processeurs
+ - augmenter le nombre de registres utilisés
+ - choisir plus habilement les registres utilisés
+
+ - propager les expressions constantes dans les expressions, les blocs de bases
+ - supprimer les expressions communes
+ - diminuer la pile en réutilisant la mémoire des expressions intermédiaires
+ - ne pas recharger les expressions quand elles sont dejà dans des registres
+ - ne sauver les registres que quand necessaire
+Ajouter :
+ - des opérateurs (surtout égalité, inégalités, opérateurs logiques)
+ - des pointeurs sur ... et des tableaux du type de base
+ - des types de données :  complexes, bignum, fractions, intervalles, flottants
+ - des structures
+ - des variables globales
+
+Une entreprise ambitieuse consisterait a étendre ppcm pour qu'il se compile
+lui-même.
