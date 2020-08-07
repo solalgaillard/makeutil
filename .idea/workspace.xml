@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated>
-      <config projectName="make_utility" targetName="make_utility" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -12,14 +10,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6aa44aed-8e28-4c06-bb47-76eda5b874bc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/A_lire" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Change" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out.dSYM/Contents/Resources/DWARF/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out.dSYM/Contents/Resources/DWARF/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppcm.h" beforeDir="false" afterPath="$PROJECT_DIR$/ppcm.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppcm.tab.c" beforeDir="false" afterPath="$PROJECT_DIR$/ppcm.tab.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppcm.y" beforeDir="false" afterPath="$PROJECT_DIR$/ppcm.y" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/make_utility.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/hashTable.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/make_utility.cbp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/expr.c" beforeDir="false" afterPath="$PROJECT_DIR$/expr.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expr.o" beforeDir="false" afterPath="$PROJECT_DIR$/expr.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellofunc.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomake.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lex.yy.c" beforeDir="false" afterPath="$PROJECT_DIR$/lex.yy.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.l" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.tab.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.tab.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.tab.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppcm.y" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +65,6 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -44,13 +79,6 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
-  <component name="RunManager">
-    <configuration name="make_utility" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="make_utility" TARGET_NAME="make_utility" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="make_utility" RUN_TARGET_NAME="make_utility">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -75,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1596288004797</updated>
       <workItem from="1596288008593" duration="46833000" />
-      <workItem from="1596709283503" duration="10000" />
+      <workItem from="1596709283503" duration="17015000" />
     </task>
     <servers />
   </component>
@@ -83,22 +111,23 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596288076030">
-      <screen x="0" y="23" width="3440" height="1417" />
+    <state x="612" y="344" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596814099440">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1596288076030" />
+    <state x="612" y="344" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1596814099440" />
     <state x="1413" y="564" key="com.intellij.ide.util.TipDialog" timestamp="1596288017523">
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
     <state x="1413" y="564" key="com.intellij.ide.util.TipDialog/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1596288017523" />
-    <state x="586" y="171" width="683" height="729" key="find.popup" timestamp="1596624447815">
+    <state x="586" y="171" width="683" height="729" key="find.popup" timestamp="1596810727286">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="1400" y="488" width="639" height="486" key="find.popup/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1596294339260" />
-    <state x="586" y="171" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1596624447815" />
-    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1596705346616">
+    <state x="586" y="171" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1596810727286" />
+    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1596811101230">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1596705346616" />
+    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1596811101230" />
   </component>
 </project>

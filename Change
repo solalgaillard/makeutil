@@ -1,9 +1,0 @@
-jm, 11 janvier 91, dans ppcm.y
-  ramene la precedence de YNEQ entre celle de + et celle de =
-jm, 25 fevrier 91
-  je retire MAXARG de ppcm.h, il n'est utilise nulle part
-  je supprime la constante HAUTEUR, utilise'e seulement dans LOCALES
-jm, 4 mars 91
-  modification de detail dans A_lire
-jm, decembre 1996
-  je porte sur 386

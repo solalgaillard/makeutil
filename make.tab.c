@@ -67,26 +67,28 @@
       know about them.  */
    enum yytokentype {
      YNAME = 258,
-     YVAR = 259,
+     DOLL_SIGN = 259,
      NEWLINE = 260
    };
 #endif
 /* Tokens.  */
 #define YNAME 258
-#define YVAR 259
+#define DOLL_SIGN 259
 #define NEWLINE 260
 
 
 
 
 /* Copy the first part of user declarations.  */
-#line 4 "ppcm.y"
+#line 5 "make.y"
 
-# include "ppcm.h"
+# include "make.h"
+char firstCommand[1000] = {'\0'};
+struct linkedList* variablesHash[SIZE] = {NULL};
+struct linkedList* cmdsHash[SIZE] = {NULL};
+
 int yylex(void);
 int yyerror(char *);
-int posexpr, incr;              /* deplacement ds la pile pour les variables */
-char * fonction;                /* le nom de la fonction courante */
 
 # define YYDEBUG 1
 
@@ -111,14 +113,14 @@ char * fonction;                /* le nom de la fonction courante */
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 14 "ppcm.y"
+#line 17 "make.y"
 {
   int i;                        /* constantes, etiquettes et nbre d'arg. */
   char * c;                     /* variables et fonctions */
-  struct tokenList * strlist;             /* expressions */
+  struct tokenList * toklist;             /* expressions */
 }
 /* Line 193 of yacc.c.  */
-#line 122 "ppcm.tab.c"
+#line 124 "make.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -131,7 +133,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 135 "ppcm.tab.c"
+#line 137 "make.tab.c"
 
 #ifdef short
 # undef short
@@ -351,11 +353,11 @@ union yyalloc
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  10
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  10
+#define YYNRULES  9
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  22
+#define YYNSTATES  21
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -372,8 +374,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        8,     9,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     7,     2,
-       2,     6,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     6,     2,
+       2,     7,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -401,24 +403,22 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     4,     7,     9,    16,    21,    23,    24,
-      27
+       0,     0,     3,     4,     7,    10,    17,    22,    23,    26
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      11,     0,    -1,    -1,    11,    12,    -1,     5,    -1,    13,
-       7,    14,     5,    14,     5,    -1,    13,     6,    14,     5,
-      -1,     3,    -1,    -1,     3,    14,    -1,     4,     8,     3,
-       9,    14,    -1
+      11,     0,    -1,    -1,    11,     5,    -1,    11,    12,    -1,
+       3,     6,    13,     5,    13,     5,    -1,     3,     7,    13,
+       5,    -1,    -1,     3,    13,    -1,     4,     8,     3,     9,
+      13,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    63,    63,    64,    68,    69,    78,    87,    93,    94,
-      98
+       0,    34,    34,    35,    36,    40,    49,    58,    59,    64
 };
 #endif
 
@@ -427,8 +427,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "YNAME", "YVAR", "NEWLINE", "'='", "':'",
-  "'('", "')'", "$accept", "programme", "expr", ".variable", ".listnames", 0
+  "$end", "error", "$undefined", "YNAME", "DOLL_SIGN", "NEWLINE", "':'",
+  "'='", "'('", "')'", "$accept", "programme", "expr", ".listnames", 0
 };
 #endif
 
@@ -437,22 +437,20 @@ static const char *const yytname[] =
    token YYLEX-NUM.  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260,    61,    58,    40,    41
+       0,   256,   257,   258,   259,   260,    58,    61,    40,    41
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    10,    11,    11,    12,    12,    12,    13,    14,    14,
-      14
+       0,    10,    11,    11,    11,    12,    12,    13,    13,    13
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     2,     1,     6,     4,     1,     0,     2,
-       5
+       0,     2,     0,     2,     2,     6,     4,     0,     2,     5
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -460,31 +458,31 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     1,     7,     4,     3,     0,     8,     8,     8,
-       0,     0,     0,     9,     0,     6,     8,     0,     0,     8,
-       5,    10
+       2,     0,     1,     0,     3,     4,     7,     7,     7,     0,
+       0,     0,     8,     0,     7,     6,     0,     0,     7,     5,
+       9
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     5,     6,    11
+      -1,     1,     5,    10
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -9
+#define YYPACT_NINF -8
 static const yytype_int8 yypact[] =
 {
-      -9,     2,    -9,    -9,    -9,    -9,    -3,     6,     6,     6,
-      -2,     7,     8,    -9,    11,    -9,     6,     9,    10,     6,
-      -9,    -9
+      -8,     3,    -8,    -2,    -8,    -8,     6,     6,     6,    -6,
+       7,     8,    -8,    11,     6,    -8,     9,    10,     6,    -8,
+      -8
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,    -9,    -9,    -8
+      -8,    -8,    -8,    -7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -494,23 +492,23 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      12,    13,     2,     7,     8,     3,    14,     4,    18,     9,
-      10,    21,    15,    16,    17,    20,     0,     0,    19
+      11,    12,    13,     2,     6,     7,     3,    17,     4,     8,
+       9,    20,    14,    15,    16,    19,     0,     0,    18
 };
 
 static const yytype_int8 yycheck[] =
 {
-       8,     9,     0,     6,     7,     3,     8,     5,    16,     3,
-       4,    19,     5,     5,     3,     5,    -1,    -1,     9
+       7,     8,     8,     0,     6,     7,     3,    14,     5,     3,
+       4,    18,     5,     5,     3,     5,    -1,    -1,     9
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    11,     0,     3,     5,    12,    13,     6,     7,     3,
-       4,    14,    14,    14,     8,     5,     5,     3,    14,     9,
-       5,    14
+       0,    11,     0,     3,     5,    12,     6,     7,     3,     4,
+      13,    13,    13,     8,     5,     5,     3,    13,     9,     5,
+      13
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1325,50 +1323,49 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 70 "ppcm.y"
+#line 41 "make.y"
     {
                     if(firstCommand[0] == '\0') {
-                        strcpy (firstCommand,(yyvsp[(1) - (6)].c));
+                        strcpy(firstCommand,(yyvsp[(1) - (6)].c));
                     }
-                    struct value * cmdValue = createCmdValue((yyvsp[(3) - (6)].strlist), (yyvsp[(5) - (6)].strlist));
+                    struct value * cmdValue = createCmdValue((yyvsp[(3) - (6)].toklist), (yyvsp[(5) - (6)].toklist));
                     insert((yyvsp[(1) - (6)].c), cmdValue, cmdsHash);
                     printf("NO bug")
                  ;}
     break;
 
   case 6:
-#line 79 "ppcm.y"
+#line 50 "make.y"
     {
-            struct value * variableValue = createVariableValue((yyvsp[(3) - (4)].strlist));
+            struct value * variableValue = createVariableValue((yyvsp[(3) - (4)].toklist));
             insert((yyvsp[(1) - (4)].c), variableValue, variablesHash);
             ;}
     break;
 
   case 7:
-#line 88 "ppcm.y"
-    { (yyval.c)=(yyvsp[(1) - (1)].c); ;}
+#line 58 "make.y"
+    { (yyval.toklist) = createTokenList();;}
     break;
 
   case 8:
-#line 93 "ppcm.y"
-    { (yyval.strlist) = createTokenList();;}
-    break;
-
-  case 9:
-#line 95 "ppcm.y"
-    { (yyval.strlist)=(yyvsp[(2) - (2)].strlist);
-             addToTokenList((yyvsp[(1) - (2)].c), (yyvsp[(2) - (2)].strlist), 0);
+#line 60 "make.y"
+    { (yyval.toklist)=(yyvsp[(2) - (2)].toklist);
+             printf("\n\n%s\n\n", (yyvsp[(1) - (2)].c));
+             addToTokenList((yyvsp[(1) - (2)].c), (yyvsp[(2) - (2)].toklist), 0);
               ;}
     break;
 
-  case 10:
-#line 99 "ppcm.y"
-    { printf("TEST%d", (yyvsp[(1) - (5)].i)); ;}
+  case 9:
+#line 65 "make.y"
+    {
+                (yyval.toklist)=(yyvsp[(5) - (5)].toklist);
+                addToTokenList((yyvsp[(3) - (5)].c), (yyvsp[(5) - (5)].toklist), (yyvsp[(1) - (5)].i));
+                ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1372 "ppcm.tab.c"
+#line 1369 "make.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1582,63 +1579,30 @@ yyreturn:
 }
 
 
-#line 102 "ppcm.y"
+#line 71 "make.y"
 
 
 # include "lex.yy.c"            /* yylex et sa clique */
 extern FILE *yyin;
+
 int
 main(int argc, char *argv[]){
-
-    memset(firstCommand, '\0', sizeof(char)*1000);
     char* cwd;
     if( (cwd=getcwd(NULL, 0)) == NULL) {
         perror("failed to get current directory\n");
     }
     else {
         printf("%s \nLength: %zu\n", cwd, strlen(cwd));
-        char * fullpath = (char*) malloc((strlen(cwd)+10)*sizeof(char));
+        char fullpath[2000] = {'\0'};
         sprintf(fullpath, "%s/Makefile", cwd);
-        free(cwd);
-        printf("%s", fullpath);
 
         yyin = fopen(fullpath, "r");
         yyparse();
-        memset(fullpath, '\0', (strlen(cwd)+10) * sizeof(char));
 
-        printf("\n%s\n", firstCommand);
-
-        struct value * result = search(firstCommand, cmdsHash);
-        char * dependenciesResolved[1024] = {NULL};
-        struct tokenList * dependencies = result->cmd->dependencies;
-        getDependenciesResolved(dependencies, dependenciesResolved);
-        int i = 0;
-        while(dependenciesResolved[i]){
-            printf("\n%s\n", dependenciesResolved[i]);
-            struct stat attrib;
-            char * fullpath = (char*) malloc((strlen(cwd)+10)*sizeof(char));
-            sprintf(fullpath, "%s/%s", cwd, firstCommand);
-            printf("%s\n", fullpath);
-            stat(fullpath, &attrib);
-            printf("%ld", attrib.st_mtime);
-            i++;
-        }
-
-        //struct tokenList * callableCmds = result->cmd->callableCmds;
-
-
-        printf("find dependencies");
-
-
-
+       callCommmand(firstCommand, cwd);
     }
-
-
   return 0;
 }
-
-
-
 
 yyerror(char * message){
   extern int lineno;
@@ -1652,24 +1616,16 @@ nomem(){
   exit(1);
 }
 
-storevar(char * name) {
-    printf("%s ", name);
-}
-
 
 /*
-WHAT STRUCTURE ?
-
-Store variable names, dictionary structure ?
-
-Then linked list.
-
-Store functions name. Expand as you go. Expand variables, expand regex
-
-
-#Do postprocess
-
-Keep list of commands expanded.
+TODO 1 - Multiline - d
+TODO 2 - Make Makefile
+TODO 3 - Make Makefile take command line argument
+TODO 3 - Refactor
+TODO 4 - Clean up memory
+TODO 5 - Test files
+TODO 6 - Bing in phony
+TODO 7 - Investigate new features
 
 
 
