@@ -22,9 +22,13 @@ int yyerror(char *);
 
 %token <c> YNAME
 
+%token <c> YSINGLELETTERNAME
+
 %token <i> DOLL_SIGN
 
 %token NEWLINE
+
+%type <c> canexpendvar
 
 %type <c> expr
 
@@ -37,7 +41,7 @@ programme : /* rien */          /* point d'entree : rien que des fonctions */
         ;
 
                                 /* toutes les expressions */
-expr    : YNAME ':' .listnames NEWLINE .listnames NEWLINE
+expr    : canexpendvar ':' .listnames NEWLINE .listnames NEWLINE
                 {
                     if(firstCommand[0] == '\0') {
                         strcpy(firstCommand,$1);
@@ -53,6 +57,14 @@ expr    : YNAME ':' .listnames NEWLINE .listnames NEWLINE
             }
         ;
 
+canexpendvar : YNAME
+                {$$=$1;}
+               | DOLL_SIGN '(' YNAME ')'
+                {$$=$3;}
+               | YSINGLELETTERNAME
+                {printf("PROBLEM ICI%s\n", $1);$$=$1;}
+        ;
+
 .listnames
         :
             { $$ = createTokenList();}
@@ -66,6 +78,11 @@ expr    : YNAME ':' .listnames NEWLINE .listnames NEWLINE
                 $$=$5;
                 addToTokenList($3, $5, $1);
                 }
+           | YSINGLELETTERNAME .listnames
+                  {
+                   $$=$2;
+                   addToTokenList($1, $2, 1);
+                   }
 
 
 %%
@@ -86,6 +103,26 @@ main(int argc, char *argv[]){
 
         yyin = fopen(fullpath, "r");
         yyparse();
+
+
+        char buffer[64] = {'\0'};
+        struct value * variableValue;
+        for(int i = 0; i<argc; i++) {
+
+            sprintf(buffer, "$%d",i);
+            printf("%s\n", argv[i]);
+
+            struct tokenList * tokList = createTokenList();
+            addToTokenList(argv[i], tokList, 1);
+            variableValue = createVariableValue(tokList);
+            insert(buffer, variableValue, variablesHash);
+
+             if(i==1) {
+                sprintf(firstCommand, "%s", argv[i]);
+             }
+
+        }
+
 
        callCommmand(firstCommand, cwd);
     }
@@ -108,11 +145,17 @@ nomem(){
 /*
 TODO - Multiline - d
 TODO - Make Makefile - d
-TODO 1 - Make Makefile take command line argument & variables
+TODO - Single Line variable - d
+TODO - Make Makefile take command line argument & variables - d
+DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
+TODO - popen with printing
+TODO - Problem with timestamping ?
 TODO 2 - Refactor
 TODO 3 - Error Management
 TODO 4 - Clean up memory
 TODO 5 - Test files
 TODO 6 - Bing in phony
 TODO 7 - Investigate new features
+TODO - Implicit rules ?
+TODO 8 - One command per target or comma separated ?
 */

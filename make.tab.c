@@ -67,14 +67,16 @@
       know about them.  */
    enum yytokentype {
      YNAME = 258,
-     DOLL_SIGN = 259,
-     NEWLINE = 260
+     YSINGLELETTERNAME = 259,
+     DOLL_SIGN = 260,
+     NEWLINE = 261
    };
 #endif
 /* Tokens.  */
 #define YNAME 258
-#define DOLL_SIGN 259
-#define NEWLINE 260
+#define YSINGLELETTERNAME 259
+#define DOLL_SIGN 260
+#define NEWLINE 261
 
 
 
@@ -120,7 +122,7 @@ typedef union YYSTYPE
   struct tokenList * toklist;             /* expressions */
 }
 /* Line 193 of yacc.c.  */
-#line 124 "make.tab.c"
+#line 126 "make.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -133,7 +135,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 137 "make.tab.c"
+#line 139 "make.tab.c"
 
 #ifdef short
 # undef short
@@ -348,20 +350,20 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   18
+#define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  10
+#define YYNTOKENS  11
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  4
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  9
+#define YYNRULES  13
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  21
+#define YYNSTATES  29
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   260
+#define YYMAXUTOK   261
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -373,9 +375,9 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       8,     9,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     6,     2,
-       2,     7,     2,     2,     2,     2,     2,     2,     2,     2,
+       9,    10,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     7,     2,
+       2,     8,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -395,7 +397,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5
+       5,     6
 };
 
 #if YYDEBUG
@@ -403,22 +405,25 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     4,     7,    10,    17,    22,    23,    26
+       0,     0,     3,     4,     7,    10,    17,    22,    24,    29,
+      31,    32,    35,    41
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      11,     0,    -1,    -1,    11,     5,    -1,    11,    12,    -1,
-       3,     6,    13,     5,    13,     5,    -1,     3,     7,    13,
-       5,    -1,    -1,     3,    13,    -1,     4,     8,     3,     9,
-      13,    -1
+      12,     0,    -1,    -1,    12,     6,    -1,    12,    13,    -1,
+      14,     7,    15,     6,    15,     6,    -1,     3,     8,    15,
+       6,    -1,     3,    -1,     5,     9,     3,    10,    -1,     4,
+      -1,    -1,     3,    15,    -1,     5,     9,     3,    10,    15,
+      -1,     4,    15,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    34,    34,    35,    36,    40,    49,    58,    59,    64
+       0,    38,    38,    39,    40,    44,    53,    60,    62,    64,
+      70,    71,    76,    81
 };
 #endif
 
@@ -427,8 +432,9 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "YNAME", "DOLL_SIGN", "NEWLINE", "':'",
-  "'='", "'('", "')'", "$accept", "programme", "expr", ".listnames", 0
+  "$end", "error", "$undefined", "YNAME", "YSINGLELETTERNAME",
+  "DOLL_SIGN", "NEWLINE", "':'", "'='", "'('", "')'", "$accept",
+  "programme", "expr", "canexpendvar", ".listnames", 0
 };
 #endif
 
@@ -437,20 +443,23 @@ static const char *const yytname[] =
    token YYLEX-NUM.  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260,    58,    61,    40,    41
+       0,   256,   257,   258,   259,   260,   261,    58,    61,    40,
+      41
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    10,    11,    11,    11,    12,    12,    13,    13,    13
+       0,    11,    12,    12,    12,    13,    13,    14,    14,    14,
+      15,    15,    15,    15
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     6,     4,     0,     2,     5
+       0,     2,     0,     2,     2,     6,     4,     1,     4,     1,
+       0,     2,     5,     2
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -458,31 +467,31 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     1,     0,     3,     4,     7,     7,     7,     0,
-       0,     0,     8,     0,     7,     6,     0,     0,     7,     5,
-       9
+       2,     0,     1,     7,     9,     0,     3,     4,     0,    10,
+       0,    10,    10,    10,     0,     0,     0,     0,    11,    13,
+       0,     6,     8,    10,     0,     0,    10,     5,    12
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     5,    10
+      -1,     1,     7,     8,    15
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -8
+#define YYPACT_NINF -12
 static const yytype_int8 yypact[] =
 {
-      -8,     3,    -8,    -2,    -8,    -8,     6,     6,     6,    -6,
-       7,     8,    -8,    11,     6,    -8,     9,    10,     6,    -8,
-      -8
+     -12,     3,   -12,    -4,   -12,     1,   -12,   -12,    -2,    13,
+       8,    13,    13,    13,     4,    14,     9,    15,   -12,   -12,
+      11,   -12,   -12,    13,    12,    17,    13,   -12,   -12
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8,    -7
+     -12,   -12,   -12,   -12,   -11
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -492,23 +501,25 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      11,    12,    13,     2,     6,     7,     3,    17,     4,     8,
-       9,    20,    14,    15,    16,    19,     0,     0,    18
+      17,    18,    19,     2,     9,    11,     3,     4,     5,     6,
+      10,    16,    25,    20,    24,    28,    12,    13,    14,    22,
+      21,    23,    26,    27
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       7,     8,     8,     0,     6,     7,     3,    14,     5,     3,
-       4,    18,     5,     5,     3,     5,    -1,    -1,     9
+      11,    12,    13,     0,     8,     7,     3,     4,     5,     6,
+       9,     3,    23,     9,     3,    26,     3,     4,     5,    10,
+       6,     6,    10,     6
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    11,     0,     3,     5,    12,     6,     7,     3,     4,
-      13,    13,    13,     8,     5,     5,     3,    13,     9,     5,
-      13
+       0,    12,     0,     3,     4,     5,     6,    13,    14,     8,
+       9,     7,     3,     4,     5,    15,     3,    15,    15,    15,
+       9,     6,    10,     6,     3,    15,    10,     6,    15
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1323,7 +1334,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 41 "make.y"
+#line 45 "make.y"
     {
                     if(firstCommand[0] == '\0') {
                         strcpy(firstCommand,(yyvsp[(1) - (6)].c));
@@ -1335,7 +1346,7 @@ yyreduce:
     break;
 
   case 6:
-#line 50 "make.y"
+#line 54 "make.y"
     {
             struct value * variableValue = createVariableValue((yyvsp[(3) - (4)].toklist));
             insert((yyvsp[(1) - (4)].c), variableValue, variablesHash);
@@ -1343,29 +1354,52 @@ yyreduce:
     break;
 
   case 7:
-#line 58 "make.y"
-    { (yyval.toklist) = createTokenList();;}
+#line 61 "make.y"
+    {(yyval.c)=(yyvsp[(1) - (1)].c);;}
     break;
 
   case 8:
-#line 60 "make.y"
+#line 63 "make.y"
+    {(yyval.c)=(yyvsp[(3) - (4)].c);;}
+    break;
+
+  case 9:
+#line 65 "make.y"
+    {printf("PROBLEM ICI%s\n", (yyvsp[(1) - (1)].c));(yyval.c)=(yyvsp[(1) - (1)].c);;}
+    break;
+
+  case 10:
+#line 70 "make.y"
+    { (yyval.toklist) = createTokenList();;}
+    break;
+
+  case 11:
+#line 72 "make.y"
     { (yyval.toklist)=(yyvsp[(2) - (2)].toklist);
              printf("\n\n%s\n\n", (yyvsp[(1) - (2)].c));
              addToTokenList((yyvsp[(1) - (2)].c), (yyvsp[(2) - (2)].toklist), 0);
               ;}
     break;
 
-  case 9:
-#line 65 "make.y"
+  case 12:
+#line 77 "make.y"
     {
                 (yyval.toklist)=(yyvsp[(5) - (5)].toklist);
                 addToTokenList((yyvsp[(3) - (5)].c), (yyvsp[(5) - (5)].toklist), (yyvsp[(1) - (5)].i));
                 ;}
     break;
 
+  case 13:
+#line 82 "make.y"
+    {
+                   (yyval.toklist)=(yyvsp[(2) - (2)].toklist);
+                   addToTokenList((yyvsp[(1) - (2)].c), (yyvsp[(2) - (2)].toklist), 1);
+                   ;}
+    break;
+
 
 /* Line 1267 of yacc.c.  */
-#line 1369 "make.tab.c"
+#line 1403 "make.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1579,7 +1613,7 @@ yyreturn:
 }
 
 
-#line 71 "make.y"
+#line 88 "make.y"
 
 
 # include "lex.yy.c"            /* yylex et sa clique */
@@ -1598,6 +1632,26 @@ main(int argc, char *argv[]){
 
         yyin = fopen(fullpath, "r");
         yyparse();
+
+
+        char buffer[64] = {'\0'};
+        struct value * variableValue;
+        for(int i = 0; i<argc; i++) {
+
+            sprintf(buffer, "$%d",i);
+            printf("%s\n", argv[i]);
+
+            struct tokenList * tokList = createTokenList();
+            addToTokenList(argv[i], tokList, 1);
+            variableValue = createVariableValue(tokList);
+            insert(buffer, variableValue, variablesHash);
+
+             if(i==1) {
+                sprintf(firstCommand, "%s", argv[i]);
+             }
+
+        }
+
 
        callCommmand(firstCommand, cwd);
     }
@@ -1618,15 +1672,18 @@ nomem(){
 
 
 /*
-TODO 1 - Multiline - d
-TODO 2 - Make Makefile
-TODO 3 - Make Makefile take command line argument
-TODO 3 - Refactor
+TODO - Multiline - d
+TODO - Make Makefile - d
+TODO - Single Line variable - d
+TODO - Implicit rules ?
+DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
+TODO - popen with printing
+TODO 1 - Make Makefile take command line argument & variables
+TODO 2 - Refactor
+TODO 3 - Error Management
 TODO 4 - Clean up memory
 TODO 5 - Test files
 TODO 6 - Bing in phony
 TODO 7 - Investigate new features
-
-
-
+TODO 8 - One command per target or comma separated
 */

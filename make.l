@@ -7,12 +7,13 @@
 
 <INITIAL,BACKSLASH>
     \\          { BEGIN(BACKSLASH); }
-    \r?\n                   { printf("SHould not bve active");return NEWLINE;}
+    \r?\n                   { return NEWLINE;}
 
-<BACKSLASH>\r?\n    {    printf("IT SHOULD HAVE ENDED"); BEGIN(INITIAL);          }
+<BACKSLASH>\r?\n    { BEGIN(INITIAL); }
 
 
 
+$+[a-zA-Z0-9]                 {  yylval.c = strdup(yytext+(strlen(yytext)-1)); return YSINGLELETTERNAME; }
 [a-zA-Z_.-][a-zA-Z0-9_.-]*  { yylval.c = strdup(yytext); return YNAME; }
 $+                      { yylval.i = strlen(yytext); return DOLL_SIGN;}
 [=():]                  { return yytext[0]; }
