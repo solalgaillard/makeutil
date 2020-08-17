@@ -22,6 +22,6 @@ make.tab.c : make.y
 lex.yy.c : make.l
 	flex make.l
 
-#make.tab.o : make.tab.c lex.yy.c
+make.tab.o : make.tab.c lex.yy.c
 
-#$O : make.h
+$O : make.h

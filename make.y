@@ -4,9 +4,10 @@
  */
 %{
 # include "make.h"
-char firstCommand[1000] = {'\0'};
-struct linkedList* variablesHash[SIZE] = {NULL};
-struct linkedList* cmdsHash[SIZE] = {NULL};
+
+char * firstCommand = NULL;
+struct linkedList* variablesHash[SIZE] = { NULL };
+struct linkedList* cmdsHash[SIZE] = { NULL };
 
 int yylex(void);
 int yyerror(char *);
@@ -43,12 +44,11 @@ programme : /* rien */          /* point d'entree : rien que des fonctions */
                                 /* toutes les expressions */
 expr    : canexpendvar ':' .listnames NEWLINE .listnames NEWLINE
                 {
-                    if(firstCommand[0] == '\0') {
-                        strcpy(firstCommand,$1);
+                    if(firstCommand == NULL) {
+                        firstCommand = $1;
                     }
                     struct value * cmdValue = createCmdValue($3, $5);
                     insert($1, cmdValue, cmdsHash);
-                    printf("NO bug")
                  }
         | YNAME '=' .listnames NEWLINE
             {
@@ -62,7 +62,7 @@ canexpendvar : YNAME
                | DOLL_SIGN '(' YNAME ')'
                 {$$=$3;}
                | YSINGLELETTERNAME
-                {printf("PROBLEM ICI%s\n", $1);$$=$1;}
+                {$$=$1;}
         ;
 
 .listnames
@@ -70,7 +70,6 @@ canexpendvar : YNAME
             { $$ = createTokenList();}
           | YNAME .listnames
              { $$=$2;
-             printf("\n\n%s\n\n", $1);
              addToTokenList($1, $2, 0);
               }
           | DOLL_SIGN '(' YNAME ')' .listnames
@@ -92,53 +91,50 @@ extern FILE *yyin;
 
 int
 main(int argc, char *argv[]){
-    char* cwd;
-    if( (cwd=getcwd(NULL, 0)) == NULL) {
-        perror("failed to get current directory\n");
-    }
-    else {
-        printf("%s \nLength: %zu\n", cwd, strlen(cwd));
-        char fullpath[2000] = {'\0'};
-        sprintf(fullpath, "%s/Makefile", cwd);
 
-        yyin = fopen(fullpath, "r");
+    char* cwd;
+
+    if( (cwd=getcwd(NULL, 0)) == NULL) {
+        perror("Problème pour l'obtention du répertoire courant.\n");
+    }
+
+    else {
+
+        char * makefileName = "Makefile";
+
+        char * fullPath = (char *) calloc((strlen(makefileName)+strlen(cwd)+1)*sizeof(char), sizeof(char));
+
+        sprintf(fullPath, "%s/%s", cwd, makefileName);
+
+        yyin = fopen(fullPath, "r");
         yyparse();
 
-
-        char buffer[64] = {'\0'};
+        char bufferCmdLineVar[10] = {'\0'};
         struct value * variableValue;
         for(int i = 0; i<argc; i++) {
-
-            sprintf(buffer, "$%d",i);
-            printf("%s\n", argv[i]);
+            if(i==1) {
+               firstCommand = argv[i];
+            }
 
             struct tokenList * tokList = createTokenList();
             addToTokenList(argv[i], tokList, 1);
-            variableValue = createVariableValue(tokList);
-            insert(buffer, variableValue, variablesHash);
 
-             if(i==1) {
-                sprintf(firstCommand, "%s", argv[i]);
-             }
+            variableValue = createVariableValue(tokList);
+
+            sprintf(bufferCmdLineVar, "%d",i);
+            insert(strdup(bufferCmdLineVar), variableValue, variablesHash);
 
         }
-
-
        callCommmand(firstCommand, cwd);
     }
   return 0;
 }
 
-yyerror(char * message){
+int yyerror(char * message){
   extern int lineno;
   extern char * yytext;
-
   fprintf(stderr, "%d: %s at %s\n", lineno, message, yytext);
-}
-
-nomem(){
-  fprintf(stderr, "Pas assez de memoire\n");
-  exit(1);
+  return lineno;
 }
 
 
@@ -147,15 +143,22 @@ TODO - Multiline - d
 TODO - Make Makefile - d
 TODO - Single Line variable - d
 TODO - Make Makefile take command line argument & variables - d
+
 DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
-TODO - popen with printing
-TODO - Problem with timestamping ?
-TODO 2 - Refactor
+TODO - Problem with timestamping - non - problème avec résolution des variables qui est une chaîne...
+TODO - popen with printing - do that next
+
+TODO 2 - Refactor - do that next
 TODO 3 - Error Management
 TODO 4 - Clean up memory
 TODO 5 - Test files
-TODO 6 - Bing in phony
+TODO 6 - Bring in phony
 TODO 7 - Investigate new features
 TODO - Implicit rules ?
-TODO 8 - One command per target or comma separated ?
+TODO - Multiple commands per target ?
+
+
+
+
+
 */

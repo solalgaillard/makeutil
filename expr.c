@@ -1,16 +1,48 @@
-/* expr.c
- gestion des expressions, de la memoire et des registres de ppcm
- */
-# include <stdio.h>
+/*  expr.c
+    gestion de la construction des différentes structures de données.
+*/
+
 # include "make.h"
 
+char * getVariablesResolved(char *);
+void getDependenciesResolved(struct tokenList *, char **);
+char * getcmdsResolved(struct tokenList *);
 
+/*
+    Initialise une struct tokenList, alloue la mémoire nécessaire,
+    initialise le compte à 0 et renvoie un pointeur sur la struct.
+*/
 struct tokenList * createTokenList() {
     struct tokenList * tokenList = (struct tokenList*) malloc(sizeof(struct tokenList));
     tokenList->count = 0;
     return tokenList;
 }
 
+/*
+    Modifie en place une struct tokenList. Réalloue de la place sur le heap avec le
+    compte actuel de tokens + 1. Alloue la place mémoire pour un nouveau token, assigne le
+    niveau de variable (0,1,..) et fais pointer sur la chaîne de caractère.
+    Réassigne le nouveau token sur le dernier index de la liste de tokens
+*/
+void addToTokenList(char * data, struct tokenList * tokenList, int variableLevel) {
+    tokenList->tokens = (struct token **)realloc(tokenList->tokens, (tokenList->count + 1) * sizeof(struct token *));
+    if(tokenList->tokens == NULL)
+    {
+        perror("Problème avec l'allocation de la mémoire");
+        exit(1); // exit the program
+    }
+    struct token * token = (struct token*) malloc(sizeof(struct token));
+    token->value = data;
+    token->variableLevel = variableLevel;
+    tokenList->tokens[tokenList->count++] = token;
+}
+
+
+/*
+    Initialise une struct cmd, alloue la mémoire nécessaire,
+    initialise deux structs tokenList et fais pointer les pointeurs
+    dependencies et callableCmds vers celles-ci.
+*/
 struct cmd * createCmd() {
     struct cmd * cmd = (struct cmd*) malloc(sizeof(struct cmd));
     cmd->dependencies = createTokenList();
@@ -35,22 +67,6 @@ struct value * createVariableValue(struct tokenList * tokenList) {
     return value;
 }
 
-void addToTokenList(char * data, struct tokenList * tokenList, int variableLevel) {
-    struct token ** newTokenList = tokenList->tokens;
-    newTokenList = (struct token **)realloc(newTokenList, (tokenList->count + 1) * sizeof(struct token *));
-    if(newTokenList==NULL)
-    {
-        perror("Memory allocation failed");
-        exit(1); // exit the program
-    }
-    struct token * token = (struct token*) malloc(sizeof(struct token));
-    token->value = strdup(data);
-    token->variableLevel = variableLevel;
-    newTokenList[tokenList->count++] = token;
-    tokenList->tokens = newTokenList;
-}
-
-
 
 char * getVariablesResolved(char * token) {
     char buffer[SIZE];
@@ -69,7 +85,6 @@ char * getVariablesResolved(char * token) {
             sprintf(buffer + strlen(buffer), " %s", variableToken);
         }
     }
-
     return strdup(buffer);
 }
 
@@ -77,6 +92,7 @@ char * getVariablesResolved(char * token) {
 void getDependenciesResolved(struct tokenList * dependencies, char ** buffer) {
     for(int i=0; i < dependencies->count; i++) {
         char * token = dependencies->tokens[i]->value;
+        printf("\ntoken: %s\n", token);
         int isVar = dependencies->tokens[i]->variableLevel;
         if(isVar){
             token = getVariablesResolved(token);
@@ -96,7 +112,6 @@ char * getcmdsResolved(struct tokenList * callableCmds) {
             token = getVariablesResolved(token);
         }
         if(i==callableCmds->count-1) {
-            printf("testtest");
             sprintf(buffer, "%s", token);
         }
         else {
@@ -132,7 +147,6 @@ void callCommmand(char * target, char* cwd) {
                 if (statsTarget != -1) {
 
                     //Check if terminal, don't take decision until we have parsed it all?
-
                     callCommmand(dependenciesResolved[i], cwd);
 
                     statsTarget = stat(fullpath, &attrib2); //If previous recursion rebuilt it
@@ -150,10 +164,16 @@ void callCommmand(char * target, char* cwd) {
 
         if(mustBeRebuilt || statsTarget == -1) {
             char * command = getcmdsResolved(result->cmd->callableCmds);
-            printf("\n%s\n", command);
+            printf("\ncommand: %s\n", command);
             system(command);
         }
-
     }
-
 }
+
+/*
+
+CLEAN MEMORY FUNCTION
+
+
+
+*/

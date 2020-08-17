@@ -5,11 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <time.h>
 #define SIZE 4096
 
-extern char firstCommand[1000];
+extern char * firstCommand;
 extern struct linkedList* variablesHash[SIZE];
 extern struct linkedList* cmdsHash[SIZE];
 
@@ -18,13 +17,12 @@ struct token {
     int variableLevel;
 };
 
-
 struct tokenList {
     int count;
     struct token ** tokens;
 };
 
-struct cmd{
+struct cmd {
     struct tokenList * dependencies; // ->Résoudre en checkant si commande
     struct tokenList * callableCmds;
 };
@@ -44,22 +42,20 @@ struct linkedList {
     struct linkedList * next;
 };
 
+/*
+    Déclaration des fonctions utilisées pour l'accès et l'insertion
+    dans la table de hâchage
+*/
+void insert(char *, struct value *, struct linkedList * []);
+struct value * search(char *, struct linkedList * []);
+
+/*
+    Déclaration des fonctions utilisées créer les structures de données
+    et appeler la commande extraite de la structure
+*/
 struct tokenList * createTokenList(void);
 struct cmd * createCmd(void);
 struct value * createCmdValue(struct tokenList *, struct tokenList *);
 struct value * createVariableValue(struct tokenList *);
 void addToTokenList(char *, struct tokenList *, int);
-char * getVariablesResolved(char *);
-void getDependenciesResolved(struct tokenList *, char **);
-char * getcmdsResolved(struct tokenList *);
 void callCommmand(char *, char *);
-struct value * search(char *, struct linkedList * []);
-void insert(char *, struct value *, struct linkedList * []);
-
-/*
-
-CLEAN MEMORY FUNCTION
-
-
-
-*/

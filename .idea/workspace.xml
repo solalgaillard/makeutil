@@ -12,15 +12,14 @@
     <list default="true" id="6aa44aed-8e28-4c06-bb47-76eda5b874bc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out.dSYM/Contents/Info.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out.dSYM/Contents/Resources/DWARF/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/expr.o" beforeDir="false" afterPath="$PROJECT_DIR$/expr.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hash_table.o" beforeDir="false" afterPath="$PROJECT_DIR$/hash_table.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lex.yy.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/expr.c" beforeDir="false" afterPath="$PROJECT_DIR$/expr.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expr.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hash_table.c" beforeDir="false" afterPath="$PROJECT_DIR$/hash_table.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hash_table.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/make.h" beforeDir="false" afterPath="$PROJECT_DIR$/make.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make.l" beforeDir="false" afterPath="$PROJECT_DIR$/make.l" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/make.tab.c" beforeDir="false" afterPath="$PROJECT_DIR$/make.tab.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/make.tab.o" beforeDir="false" afterPath="$PROJECT_DIR$/make.tab.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make.tab.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/make.tab.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/make.y" beforeDir="false" afterPath="$PROJECT_DIR$/make.y" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +68,10 @@
       <option name="presentableId" value="Default" />
       <updated>1596288004797</updated>
       <workItem from="1596288008593" duration="46833000" />
-      <workItem from="1596709283503" duration="22460000" />
+      <workItem from="1596709283503" duration="29315000" />
+      <workItem from="1597259100297" duration="3000" />
+      <workItem from="1597680775109" duration="3380000" />
+      <workItem from="1597689455070" duration="63000" />
     </task>
     <servers />
   </component>
@@ -86,11 +88,11 @@
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
     <state x="1413" y="564" key="com.intellij.ide.util.TipDialog/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1596288017523" />
-    <state x="586" y="171" width="683" height="729" key="find.popup" timestamp="1596810727286">
+    <state x="586" y="171" width="683" height="729" key="find.popup" timestamp="1597685808916">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="1400" y="488" width="639" height="486" key="find.popup/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1596294339260" />
-    <state x="586" y="171" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1596810727286" />
+    <state x="586" y="171" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1597685808916" />
     <state x="385" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1596811101230">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
