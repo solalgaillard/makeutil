@@ -50,8 +50,15 @@ struct cmd * createCmd() {
     return cmd;
 }
 
+/*
+    Initialise une struct value, alloue la mémoire nécessaire,
+    switch
+    dependencies et callableCmds vers celles-ci.
+*/
+
 struct value * createCmdValue(struct tokenList * dependencies, struct tokenList * callableCmds) {
     struct value * value = (struct value*) malloc(sizeof(struct value));
+    printf("*******%d*****\n", cmd);
     value->variableOrCmdSwitch = cmd;
     struct cmd * cmd = (struct cmd*) malloc(sizeof(struct cmd));
     cmd->dependencies = dependencies;
@@ -123,7 +130,6 @@ char * getcmdsResolved(struct tokenList * callableCmds) {
 
 
 void callCommmand(char * target, char* cwd) {
-
     struct value * result = search(target, cmdsHash);
     if(result) {
         char *dependenciesResolved[1024] = {NULL};
@@ -134,38 +140,71 @@ void callCommmand(char * target, char* cwd) {
         struct stat attrib1;
         struct stat attrib2;
         sprintf(fullpath, "%s/%s", cwd, target);
-        int statsTarget = stat(fullpath, &attrib1);
+        int statsTarget;
+        char * command;
 
-        int mustBeRebuilt = 0;
-        if (statsTarget != -1) {
-            int i = 0;
-            while (dependenciesResolved[i]) {
+        int i = 0;
+        while (dependenciesResolved[i]) {
+            memset(fullpath, '\0', 2000);
+            sprintf(fullpath, "%s/%s", cwd, dependenciesResolved[i]);
+            printf("\nfullpath: %s %d\n", fullpath, access( fullpath, F_OK ));
+            statsTarget = stat(fullpath, &attrib2); //If previous recursion rebuilt it
+            if (access( fullpath, F_OK ) == -1 || difftime(attrib2.st_mtime, attrib1.st_mtime) > 0) {
+                printf("\nInside target: %s\n", target);
+                //Check if terminal, don't take decision until we have parsed it all?
+                callCommmand(dependenciesResolved[i], cwd);
 
-                memset(fullpath, '\0', 2000);
-                sprintf(fullpath, "%s/%s", cwd, dependenciesResolved[i]);
-                statsTarget = stat(fullpath, &attrib2);
-                if (statsTarget != -1) {
-
-                    //Check if terminal, don't take decision until we have parsed it all?
-                    callCommmand(dependenciesResolved[i], cwd);
-
-                    statsTarget = stat(fullpath, &attrib2); //If previous recursion rebuilt it
-                    if (statsTarget == -1) {
-                        perror("Problème après reconstruction");
-                    }
-
-                    if (difftime(attrib2.st_mtime, attrib1.st_mtime) > 0) {
-                        mustBeRebuilt = 1;
-                    }
-                }
-                i++;
+                command = getcmdsResolved(result->cmd->callableCmds);
+                printf("\ncommand: %s\n", command);
+                system(command);
             }
+            i++;
         }
+    }
+}
 
-        if(mustBeRebuilt || statsTarget == -1) {
-            char * command = getcmdsResolved(result->cmd->callableCmds);
-            printf("\ncommand: %s\n", command);
-            system(command);
+void cleanUpMemory() {
+    struct linkedList * linkedList;
+
+    for(int i = 0; i<SIZE; i++) {
+        linkedList = variablesHash[i];
+        while (linkedList) {
+            printf("VAR key: %s\n", variablesHash[i]->key);
+            free(variablesHash[i]->key);
+            struct value * value = variablesHash[i]->value;
+            struct tokenList * tokensInVariable = value->tokensInVariable;
+            printf("%d\n", tokensInVariable->count);
+            for(int j=0; j<tokensInVariable->count;j++) {
+                //printf("%d\n", tokensInVariable->count);
+                //free(tokensInVariable->tokens[j]->value);
+                //free(tokensInVariable->tokens[j]);
+            }
+            free(tokensInVariable);
+            free(value);
+            free(linkedList);
+            linkedList = variablesHash[i]->next;
+        }
+        linkedList = cmdsHash[i];
+        while (linkedList) {
+            printf("CMD key: %s\n", cmdsHash[i]->key);
+            free(cmdsHash[i]->key);
+            struct value * value = cmdsHash[i]->value;
+            struct cmd * cmd = value->cmd;
+            struct tokenList * dependencies = cmd->dependencies;
+            for(int j=0; j<dependencies->count;j++) {
+                free(dependencies->tokens[j]->value);
+                free(dependencies->tokens[j]);
+            }
+            free(cmd);
+            struct tokenList * callableCmds = cmd->callableCmds;
+            for(int j=0; j<callableCmds->count;j++) {
+                free(callableCmds->tokens[j]->value);
+                free(callableCmds->tokens[j]);
+            }
+            free(dependencies);
+            free(value);
+            free(linkedList);
+            linkedList = cmdsHash[i]->next;
         }
     }
 }

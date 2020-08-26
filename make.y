@@ -48,10 +48,12 @@ expr    : canexpendvar ':' .listnames NEWLINE .listnames NEWLINE
                         firstCommand = $1;
                     }
                     struct value * cmdValue = createCmdValue($3, $5);
+                    printf("CMD TARGET %s\n",$1);
                     insert($1, cmdValue, cmdsHash);
                  }
         | YNAME '=' .listnames NEWLINE
             {
+            printf("VAR TARGET %s\n",$1);
             struct value * variableValue = createVariableValue($3);
             insert($1, variableValue, variablesHash);
             }
@@ -126,6 +128,9 @@ main(int argc, char *argv[]){
 
         }
        callCommmand(firstCommand, cwd);
+
+       cleanUpMemory();
+
     }
   return 0;
 }

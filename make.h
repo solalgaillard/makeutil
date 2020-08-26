@@ -3,6 +3,7 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -59,3 +60,4 @@ struct value * createCmdValue(struct tokenList *, struct tokenList *);
 struct value * createVariableValue(struct tokenList *);
 void addToTokenList(char *, struct tokenList *, int);
 void callCommmand(char *, char *);
+void cleanUpMemory();
