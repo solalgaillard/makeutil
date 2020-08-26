@@ -169,15 +169,12 @@ void cleanUpMemory() {
     for(int i = 0; i<SIZE; i++) {
         linkedList = variablesHash[i];
         while (linkedList) {
-            printf("VAR key: %s\n", variablesHash[i]->key);
             free(variablesHash[i]->key);
             struct value * value = variablesHash[i]->value;
             struct tokenList * tokensInVariable = value->tokensInVariable;
-            printf("%d\n", tokensInVariable->count);
             for(int j=0; j<tokensInVariable->count;j++) {
-                //printf("%d\n", tokensInVariable->count);
-                //free(tokensInVariable->tokens[j]->value);
-                //free(tokensInVariable->tokens[j]);
+                free(tokensInVariable->tokens[j]->value);
+                free(tokensInVariable->tokens[j]);
             }
             free(tokensInVariable);
             free(value);
@@ -186,7 +183,6 @@ void cleanUpMemory() {
         }
         linkedList = cmdsHash[i];
         while (linkedList) {
-            printf("CMD key: %s\n", cmdsHash[i]->key);
             free(cmdsHash[i]->key);
             struct value * value = cmdsHash[i]->value;
             struct cmd * cmd = value->cmd;
@@ -209,10 +205,3 @@ void cleanUpMemory() {
     }
 }
 
-/*
-
-CLEAN MEMORY FUNCTION
-
-
-
-*/

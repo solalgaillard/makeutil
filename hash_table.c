@@ -18,11 +18,12 @@ int hashCode(char *);
     Fonction simple de hachage.
 */
 int hashCode(char * key) {
-    int hash = 0;
+    unsigned long hash = 0;
     for (int i = 0; i < strlen(key); i++) {
         hash = 31 * hash + key[i];
     }
-    return hash%SIZE;
+
+    return hash ? hash%SIZE : 0;
 }
 
 /*

@@ -119,7 +119,7 @@ main(int argc, char *argv[]){
             }
 
             struct tokenList * tokList = createTokenList();
-            addToTokenList(argv[i], tokList, 1);
+            addToTokenList(strdup(argv[i]), tokList, 1);
 
             variableValue = createVariableValue(tokList);
 
@@ -148,14 +148,17 @@ TODO - Multiline - d
 TODO - Make Makefile - d
 TODO - Single Line variable - d
 TODO - Make Makefile take command line argument & variables - d
+TODO - Clean up memory - d
+
 
 DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
-TODO - Problem with timestamping - non - problème avec résolution des variables qui est une chaîne...
 TODO - popen with printing - do that next
+
+TODO - Problem with timestamping - non - problème avec résolution des variables qui est une chaîne...
+
 
 TODO 2 - Refactor - do that next
 TODO 3 - Error Management
-TODO 4 - Clean up memory
 TODO 5 - Test files
 TODO 6 - Bring in phony
 TODO 7 - Investigate new features
