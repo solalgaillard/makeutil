@@ -142,28 +142,41 @@ int yyerror(char * message){
   return lineno;
 }
 
-
 /*
 TODO - Multiline - d
 TODO - Make Makefile - d
 TODO - Single Line variable - d
 TODO - Make Makefile take command line argument & variables - d
 TODO - Clean up memory - d
-
+TODO - popen with printing - d
+TODO - problème avec résolution des variables qui est une chaîne... next - d
+TODO - Check that popen prints - d
+TODO - Refactor - do that next - especially part of cmdsresolved and depresolved - d
+TODO - Implicit rules for GCC - d
+https://www.gnu.org/software/make/manual/html_node/Catalogue-of-Rules.html#Catalogue-of-Rules - just one
+TODO - Empty Variables ---> d
+TODO - FIGURE OUT FLOW - WHY IT - d
 
 DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
-TODO - popen with printing - do that next
-
-TODO - Problem with timestamping - non - problème avec résolution des variables qui est une chaîne...
 
 
-TODO 2 - Refactor - do that next
+
+TODO - Parse multiple targets - not in the data structure but in the syntaxical analysis
+TODO - Multiple commands per target - Change indent
+
+TODO - Cleanup Code and memory
+
+
+
+TODO - Clean up grammar
 TODO 3 - Error Management
 TODO 5 - Test files
+
+
 TODO 6 - Bring in phony
-TODO 7 - Investigate new features
-TODO - Implicit rules ?
-TODO - Multiple commands per target ?
+
+
+
 
 
 

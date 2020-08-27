@@ -4,9 +4,9 @@
 
 # include "make.h"
 
-char * getVariablesResolved(char *);
-void getDependenciesResolved(struct tokenList *, char **);
-char * getcmdsResolved(struct tokenList *);
+char ** getVariablesResolved(struct tokenList * );
+char ** getDependenciesResolved(struct tokenList *);
+char ** getcmdsResolved(struct tokenList *);
 
 /*
     Initialise une struct tokenList, alloue la mémoire nécessaire,
@@ -14,6 +14,7 @@ char * getcmdsResolved(struct tokenList *);
 */
 struct tokenList * createTokenList() {
     struct tokenList * tokenList = (struct tokenList*) malloc(sizeof(struct tokenList));
+    tokenList->tokens = (struct token **) calloc(tokenList->count + 1, sizeof(struct token *));
     tokenList->count = 0;
     return tokenList;
 }
@@ -75,92 +76,256 @@ struct value * createVariableValue(struct tokenList * tokenList) {
 }
 
 
-char * getVariablesResolved(char * token) {
-    char buffer[SIZE];
-    struct value * nestedResult = search(token, variablesHash);
-    struct tokenList * tokensInVariable = nestedResult->tokensInVariable;
+
+
+char ** getVariablesResolved(struct tokenList * tokensInVariable) {
+    char ** tokensParsedInVariable = (char **) calloc(tokensInVariable->count + 1, sizeof(char*));
+
+    char ** resolvedNestedVariable;
+
+
+    int j = 0;
+    int f = 0;
+
     for(int i=tokensInVariable->count-1; i >= 0 ; i--) {
+
         char * variableToken = tokensInVariable->tokens[i]->value;
         int variableTokenLevel = tokensInVariable->tokens[i]->variableLevel;
-        if(variableTokenLevel){
-            variableToken = getVariablesResolved(variableToken);
-        }
-        if(i==tokensInVariable->count-1) {
-            sprintf(buffer, "%s", variableToken);
+
+        if (variableTokenLevel) {
+            struct value * nestedResult = search(variableToken, variablesHash);
+
+            if(nestedResult) {
+                struct tokenList * nestedTokensInVariable = nestedResult->tokensInVariable;
+                resolvedNestedVariable = getVariablesResolved(nestedTokensInVariable);
+
+                j = 0;
+                while (resolvedNestedVariable[j]) {
+                    tokensParsedInVariable = (char **) realloc(tokensParsedInVariable, (tokensInVariable->count + 1 + j )* sizeof(char*));
+                    tokensParsedInVariable[tokensInVariable->count - 1 - i - f + j] = resolvedNestedVariable[j];
+                    j++;
+                }
+                j--;
+
+            }
+            else { //TRUNCATE ARRAY HERE DO IN OTHER DIRECTION
+                /*for(int f=tokensInVariable->count - 1 - i + j;  f<tokensInVariable->count; f++) {
+
+                    printf("truncated %s %s\n", tokensParsedInVariable[f], tokensParsedInVariable[f - 1]);
+
+                    tokensParsedInVariable[f] = tokensParsedInVariable[f - 1];
+                }*/
+                f++;
+
+                //tokensParsedInVariable = (char **) realloc(tokensParsedInVariable, (tokensInVariable->count + 1 + j - 1 )* sizeof(char*));
+
+            }
+
+
         }
         else {
-            sprintf(buffer + strlen(buffer), " %s", variableToken);
+            //No realloc pour f++ car pas grave si on perd de l'espace.
+            tokensParsedInVariable[tokensInVariable->count - 1 - i - f + j] = variableToken;
         }
     }
-    return strdup(buffer);
-}
 
-//string array for all dependencies
-void getDependenciesResolved(struct tokenList * dependencies, char ** buffer) {
-    for(int i=0; i < dependencies->count; i++) {
-        char * token = dependencies->tokens[i]->value;
-        printf("\ntoken: %s\n", token);
-        int isVar = dependencies->tokens[i]->variableLevel;
-        if(isVar){
-            token = getVariablesResolved(token);
-        }
-        buffer[i] = token;
-    }
-}
-
-char * getcmdsResolved(struct tokenList * callableCmds) {
-    char buffer[SIZE];
-    for(int i=callableCmds->count-1; i >= 0 ; i--) {
-        char * token = callableCmds->tokens[i]->value;
-        printf("\n%s\n", token);
-        int isVar = callableCmds->tokens[i]->variableLevel;
-        printf("\n%d\n", isVar);
-        if(isVar){
-            token = getVariablesResolved(token);
-        }
-        if(i==callableCmds->count-1) {
-            sprintf(buffer, "%s", token);
-        }
-        else {
-            sprintf(buffer + strlen(buffer), " %s", token);
-        }
-    }
-    return strdup(buffer);
+    return tokensParsedInVariable;
 }
 
 
-void callCommmand(char * target, char* cwd) {
+void insertImplictRule(char * targetName, struct value * result) {
+
+    int index = -1;
+    int i=strlen(targetName)-1;
+    while(i>=0) {
+        if (targetName[i] == '.') {
+            index = i;
+            break;
+        }
+        i--;
+    }
+
+
+    if (index != -1) {
+
+        if(strcmp(targetName+index, ".o") == 0){
+
+            char buffer[200] = {'\0'};
+
+
+            int i = 0;
+            while(i<index){
+                buffer[i] = targetName[i];
+                i++;
+            }
+
+            sprintf(buffer + strlen(buffer), "%s", ".c");
+
+            struct tokenList * callableCmds;
+
+            if(result) {
+                callableCmds = result->cmd->callableCmds;
+            }
+            else {
+                struct tokenList * dependencies = createTokenList();
+                addToTokenList(strdup(buffer), dependencies, 0);
+                callableCmds = createTokenList();
+                struct value * cmdValue = createCmdValue(dependencies, callableCmds);
+                insert(strdup(targetName), cmdValue, cmdsHash);
+            }
+
+
+            addToTokenList(strdup(buffer), callableCmds, 0);
+            addToTokenList(strdup("-c"), callableCmds, 0);
+            addToTokenList(strdup("CFLAGS"), callableCmds, 1);
+            addToTokenList(strdup("CPPFLAGS"), callableCmds, 1); //CREATED SEGFAULT WHEN VAR NOT PRES
+            addToTokenList(strdup("CC"), callableCmds, 1);
+
+
+
+
+
+        }
+        }
+
+    }
+
+
+
+enum Bool callCommmand(char * target, char* cwd) {
     struct value * result = search(target, cmdsHash);
+    enum Bool hasLowerDependencyRebuilt = False;
+
+
+    if (!result || result->cmd->callableCmds->count == 0) {
+        insertImplictRule(target, result);
+        if(!result) {
+            result = search(target, cmdsHash);
+        }
+
+
+
+
+/*
+        if (!result) {
+            printf(".c should not be parsed");
+        }
+        else {
+            char ** command = getVariablesResolved(result->cmd->callableCmds);
+
+
+            char buffer[SIZE]={'\0'};
+
+
+            int i = 0;
+            while(command[i]) {
+                printf( "\n%s \n", command[i]);
+                i++;
+            }
+        }*/
+
+    }
+
+
+/*
+    result = search("expr.o", cmdsHash);
+
     if(result) {
-        char *dependenciesResolved[1024] = {NULL};
+
+    }
+    printf("buffer: %s", buffers);
+*/
+    /*
+     *
+     * - Get Extension of target
+     *
+     * struct tokenList * toklist = createTokenList();
+     * addToTokenList($1, $2, 0);
+     * struct value * cmdValue = createCmdValue($3, $5);
+        printf("CMD TARGET %s\n",$1);
+        insert($1, cmdValue, cmdsHash);
+     *
+     *
+     * */
+
+
+
+
+    if(result) {
         char fullpath[2000] = {'\0'};
-        struct tokenList *dependencies = result->cmd->dependencies;
-        getDependenciesResolved(dependencies, dependenciesResolved);
+        struct tokenList * dependencies = result->cmd->dependencies;
+        char ** dependenciesResolved = getVariablesResolved(dependencies);
+
+
+        //printf("%d\n\n", dependencies->count);
 
         struct stat attrib1;
         struct stat attrib2;
         sprintf(fullpath, "%s/%s", cwd, target);
-        int statsTarget;
-        char * command;
+        stat(fullpath, &attrib1);
+        int doesTargetExist = access( fullpath, F_OK );
+        char ** command;
 
         int i = 0;
         while (dependenciesResolved[i]) {
             memset(fullpath, '\0', 2000);
             sprintf(fullpath, "%s/%s", cwd, dependenciesResolved[i]);
-            printf("\nfullpath: %s %d\n", fullpath, access( fullpath, F_OK ));
-            statsTarget = stat(fullpath, &attrib2); //If previous recursion rebuilt it
-            if (access( fullpath, F_OK ) == -1 || difftime(attrib2.st_mtime, attrib1.st_mtime) > 0) {
-                printf("\nInside target: %s\n", target);
-                //Check if terminal, don't take decision until we have parsed it all?
-                callCommmand(dependenciesResolved[i], cwd);
+            //printf("\nfullpath: %s %d\n", fullpath, access( fullpath, F_OK ));
+            stat(fullpath, &attrib2); //If previous recursion rebuilt it
 
-                command = getcmdsResolved(result->cmd->callableCmds);
-                printf("\ncommand: %s\n", command);
-                system(command);
+            //printf("\nInside target: %s %d %d %f \n",  dependenciesResolved[i], access( fullpath, F_OK ), doesTargetExist, difftime(attrib2.st_mtime, attrib1.st_mtime));
+
+            if (callCommmand(dependenciesResolved[i], cwd) || doesTargetExist == -1 || access( fullpath, F_OK ) == - 1 || difftime(attrib2.st_mtime, attrib1.st_mtime) > 0) {
+
+
+                //printf("Inside: %s", dependenciesResolved[i]);
+
+/*
+               command = getVariablesResolved(result->cmd->callableCmds);
+
+
+                char buffer[SIZE]={'\0'};
+
+
+                int i = 0;
+                while(command[i]) {
+                    sprintf(buffer + strlen(buffer), "%s ", command[i]);
+                    i++;
+                }
+
+                printf("command: %s\n", buffer);
+
+
+                FILE * p = popen (buffer, "w");
+                pclose(p);*/
+                hasLowerDependencyRebuilt = True;
+
             }
             i++;
         }
+
+        if(hasLowerDependencyRebuilt) {
+            command = getVariablesResolved(result->cmd->callableCmds);
+
+
+            char buffer[SIZE]={'\0'};
+
+
+            int i = 0;
+            while(command[i]) {
+                sprintf(buffer + strlen(buffer), "%s ", command[i]);
+                i++;
+            }
+
+            printf("command: %s\n", buffer);
+
+
+            FILE * p = popen (buffer, "w");
+            pclose(p);
+        }
+
     }
+    return hasLowerDependencyRebuilt;
 }
 
 void cleanUpMemory() {

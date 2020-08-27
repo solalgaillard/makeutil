@@ -9,6 +9,8 @@
 #include <time.h>
 #define SIZE 4096
 
+enum Bool {False, True};
+
 extern char * firstCommand;
 extern struct linkedList* variablesHash[SIZE];
 extern struct linkedList* cmdsHash[SIZE];
@@ -59,5 +61,5 @@ struct cmd * createCmd(void);
 struct value * createCmdValue(struct tokenList *, struct tokenList *);
 struct value * createVariableValue(struct tokenList *);
 void addToTokenList(char *, struct tokenList *, int);
-void callCommmand(char *, char *);
+enum Bool callCommmand(char *, char *);
 void cleanUpMemory();

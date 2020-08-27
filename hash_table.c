@@ -22,8 +22,7 @@ int hashCode(char * key) {
     for (int i = 0; i < strlen(key); i++) {
         hash = 31 * hash + key[i];
     }
-
-    return hash ? hash%SIZE : 0;
+    return hash%SIZE;
 }
 
 /*
