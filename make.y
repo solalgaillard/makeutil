@@ -5,6 +5,8 @@
 %{
 # include "make.h"
 
+/* Au niveau global, initialisation de la première commande à effectuer, et des deux tables de hâchage. */
+
 char * firstCommand = NULL;
 struct linkedList* variablesHash[SIZE] = { NULL };
 struct linkedList* cmdsHash[SIZE] = { NULL };
@@ -16,74 +18,75 @@ int yyerror(char *);
 %}
 
 %union {
-  int i;                        /* constantes, etiquettes et nbre d'arg. */
-  char * c;                     /* variables et fonctions */
-  struct tokenList * toklist;             /* expressions */
+  int i;                        /* utilisé pour le niveau de variable $ */
+  char * c;                     /* n'importe quelle chaîne */
+  struct tokenList * toklist;   /* tokenList construite */
 };
 
-%token <c> YNAME
+%token <c> YSTRING
 
-%token <c> YSINGLELETTERNAME
+%token <c> VAR_NAME
 
-%token <i> DOLL_SIGN
+%token <i> VAR_SIGN
 
-%token NEWLINE
+%token LINESEPARATOR
 
-%type <c> canexpendvar
+%type <c> .canexpendvar
 
-%type <c> expr
-
-%type <toklist> .listnames
+%type <toklist> .recstrings
 
 %%
-programme : /* rien */          /* point d'entree : rien que des fonctions */
-        | programme NEWLINE
-        | programme expr
+program : /* rien */          /* point d'entree : rien que des expr */
+	| program LINESEPARATOR
+        | program expr
         ;
 
                                 /* toutes les expressions */
-expr    : canexpendvar ':' .listnames NEWLINE .listnames NEWLINE
-                {
-                    if(firstCommand == NULL) {
-                        firstCommand = $1;
-                    }
-                    struct value * cmdValue = createCmdValue($3, $5);
-                    printf("CMD TARGET %s\n",$1);
-                    insert($1, cmdValue, cmdsHash);
-                 }
-        | YNAME '=' .listnames NEWLINE
-            {
-            printf("VAR TARGET %s\n",$1);
-            struct value * variableValue = createVariableValue($3);
-            insert($1, variableValue, variablesHash);
-            }
+expr : .canexpendvar ':' .recstrings LINESEPARATOR .recstrings LINESEPARATOR
+		{
+			if(firstCommand == NULL) {
+			firstCommand = $1;
+			}
+			struct value * cmdValue = createCmdValue($3, $5);
+			insert($1, cmdValue, cmdsHash);
+		}
+        | YSTRING '=' .recstrings LINESEPARATOR
+		{
+			struct value * variableValue = createVariableValue($3);
+			insert($1, variableValue, variablesHash);
+		}
         ;
 
-canexpendvar : YNAME
-                {$$=$1;}
-               | DOLL_SIGN '(' YNAME ')'
-                {$$=$3;}
-               | YSINGLELETTERNAME
-                {$$=$1;}
-        ;
+/*
+  Ceci est problématique ici, il faudrait en effet pouvoir prendre une liste de chaînes, et construire plusieurs
+  cmdValue struct à partir de chaque "target", vient aussi la question de la résolution de variables.
+  Par mesure de simplicité, on fait juste valider une syntaxe simple ici.
+*/
+.canexpendvar : YSTRING
+                { $$=$1; }
+	| VAR_SIGN '(' YSTRING ')'
+                { $$=$3; }
+       	| VAR_NAME
+                { $$=$1; }
+       	;
 
-.listnames
-        :
-            { $$ = createTokenList();}
-          | YNAME .listnames
-             { $$=$2;
-             addToTokenList($1, $2, 0);
-              }
-          | DOLL_SIGN '(' YNAME ')' .listnames
+.recstrings : /* rien */
+		{ $$ = createTokenList(); }
+          | YSTRING .recstrings
+		{
+			$$=$2;
+			addToTokenList($1, $2, 0);
+		}
+          | VAR_SIGN '(' YSTRING ')' .recstrings
                {
-                $$=$5;
-                addToTokenList($3, $5, $1);
+			$$=$5;
+			addToTokenList($3, $5, $1);
                 }
-           | YSINGLELETTERNAME .listnames
-                  {
-                   $$=$2;
-                   addToTokenList($1, $2, 1);
-                   }
+          | VAR_NAME .recstrings
+		{
+			$$=$2;
+			addToTokenList($1, $2, 1);
+		}
 
 
 %%
@@ -94,6 +97,7 @@ extern FILE *yyin;
 int
 main(int argc, char *argv[]){
 
+
     char* cwd;
 
     if( (cwd=getcwd(NULL, 0)) == NULL) {
@@ -102,8 +106,8 @@ main(int argc, char *argv[]){
 
     else {
 
+	/* Prend le makefile dans le dossier courant */
         char * makefileName = "Makefile";
-
         char * fullPath = (char *) calloc((strlen(makefileName)+strlen(cwd)+1)*sizeof(char), sizeof(char));
 
         sprintf(fullPath, "%s/%s", cwd, makefileName);
@@ -113,6 +117,7 @@ main(int argc, char *argv[]){
 
         char bufferCmdLineVar[10] = {'\0'};
         struct value * variableValue;
+        /* Passe en variable tous les arguments de la commande pour référence dans le makefile */
         for(int i = 0; i<argc; i++) {
             if(i==1) {
                firstCommand = argv[i];
@@ -127,7 +132,12 @@ main(int argc, char *argv[]){
             insert(strdup(bufferCmdLineVar), variableValue, variablesHash);
 
         }
-       callCommmand(firstCommand, cwd);
+       enum Bool commandHasBeenCalled = callCommmand(firstCommand, cwd);
+
+	/* Si aucun appel */
+       if (!commandHasBeenCalled) {
+           printf("Up to Date\n");
+       }
 
        cleanUpMemory();
 
@@ -143,43 +153,33 @@ int yyerror(char * message){
 }
 
 /*
-TODO - Multiline - d
-TODO - Make Makefile - d
-TODO - Single Line variable - d
-TODO - Make Makefile take command line argument & variables - d
-TODO - Clean up memory - d
-TODO - popen with printing - d
-TODO - problème avec résolution des variables qui est une chaîne... next - d
-TODO - Check that popen prints - d
-TODO - Refactor - do that next - especially part of cmdsresolved and depresolved - d
-TODO - Implicit rules for GCC - d
+
+Différence avec GNU make:
+	l'indentation. Une règle unique.
+
+Done:
+Multiline
+Make Makefile
+Single Line variable
+Make Makefile take command line argument & variables
+Clean up memory
+popen with printing
+problème avec résolution des variables qui est une chaîne
+Check that popen prints
+Refactor - especially part of cmdsresolved and depresolved
+Implicit rules for GCC
 https://www.gnu.org/software/make/manual/html_node/Catalogue-of-Rules.html#Catalogue-of-Rules - just one
-TODO - Empty Variables ---> d
-TODO - FIGURE OUT FLOW - WHY IT - d
-
-DIFFERENCE AVEC MAKE, l'indentation. Une règle unique.
+Empty Variables resolution
 
 
 
-TODO - Parse multiple targets - not in the data structure but in the syntaxical analysis
-TODO - Multiple commands per target - Change indent
-
-TODO - Cleanup Code and memory
-
-
-
-TODO - Clean up grammar
-TODO 3 - Error Management
-TODO 5 - Test files
-
-
-TODO 6 - Bring in phony
-
-
-
-
-
-
-
+TODO 1 - Parse multiple targets - not in the data structure but in the syntaxical analysis
+TODO 2 - Multiple commands per target - Change indent
+TODO 3 - make it recognize different assignment characters such as ":=", etc...
+TODO 4 - Cleanup Code and memory
+TODO 5 - Clean up grammar
+TODO 6 - Error Management
+TODO 7 - Test files
+TODO 8 - Bring in phony
 
 */

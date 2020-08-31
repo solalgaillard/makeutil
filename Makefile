@@ -4,7 +4,8 @@
 # Pour compiler :
 #		make
 #
-CFLAGS = -O
+CFLAGS = -O \
+-DECHO
 CC = gcc
 
 O = make.tab.o expr.o hash_table.o # objets

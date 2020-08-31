@@ -26,7 +26,7 @@ struct tokenList {
 };
 
 struct cmd {
-    struct tokenList * dependencies; // ->Résoudre en checkant si commande
+    struct tokenList * dependencies;
     struct tokenList * callableCmds;
 };
 

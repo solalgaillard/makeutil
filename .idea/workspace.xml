@@ -10,15 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6aa44aed-8e28-4c06-bb47-76eda5b874bc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/expr.c" beforeDir="false" afterPath="$PROJECT_DIR$/expr.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/expr.o" beforeDir="false" afterPath="$PROJECT_DIR$/expr.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hash_table.c" beforeDir="false" afterPath="$PROJECT_DIR$/hash_table.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hash_table.o" beforeDir="false" afterPath="$PROJECT_DIR$/hash_table.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lex.yy.c" beforeDir="false" afterPath="$PROJECT_DIR$/lex.yy.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make" beforeDir="false" afterPath="$PROJECT_DIR$/make" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make.h" beforeDir="false" afterPath="$PROJECT_DIR$/make.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make.l" beforeDir="false" afterPath="$PROJECT_DIR$/make.l" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make.tab.c" beforeDir="false" afterPath="$PROJECT_DIR$/make.tab.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make.tab.o" beforeDir="false" afterPath="$PROJECT_DIR$/make.tab.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/make.y" beforeDir="false" afterPath="$PROJECT_DIR$/make.y" afterDir="false" />
@@ -45,6 +48,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -74,7 +78,9 @@
       <workItem from="1597680775109" duration="3380000" />
       <workItem from="1597689455070" duration="380000" />
       <workItem from="1598445360916" duration="6734000" />
-      <workItem from="1598452353403" duration="35056000" />
+      <workItem from="1598452353403" duration="36950000" />
+      <workItem from="1598615636552" duration="1804000" />
+      <workItem from="1598853642329" duration="11586000" />
     </task>
     <servers />
   </component>
@@ -82,19 +88,23 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598532849451">
+    <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598862450010">
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
-    <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598532849451" />
+    <state x="1461" y="541" key="#com.intellij.fileTypes.FileTypeChooser/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598862450010" />
     <state x="612" y="344" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1596877748868" />
-    <state x="1413" y="564" key="com.intellij.ide.util.TipDialog" timestamp="1598445359688">
+    <state x="1229" y="370" key="SettingsEditor" timestamp="1598855551082">
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
-    <state x="1413" y="564" key="com.intellij.ide.util.TipDialog/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598445359688" />
-    <state x="1400" y="488" width="639" height="486" key="find.popup" timestamp="1598543887962">
+    <state x="1229" y="370" key="SettingsEditor/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598855551082" />
+    <state x="1413" y="564" key="com.intellij.ide.util.TipDialog" timestamp="1598853644307">
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
-    <state x="1400" y="488" width="639" height="486" key="find.popup/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598543887962" />
+    <state x="1413" y="564" key="com.intellij.ide.util.TipDialog/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598853644307" />
+    <state x="1400" y="488" width="639" height="486" key="find.popup" timestamp="1598857026593">
+      <screen x="0" y="23" width="3440" height="1417" />
+    </state>
+    <state x="1400" y="488" width="639" height="486" key="find.popup/-1920.263.1920.1177/3440.97.2560.1417/0.23.3440.1417@0.23.3440.1417" timestamp="1598857026593" />
     <state x="586" y="171" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1597685808916" />
     <state x="385" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1596811101230">
       <screen x="0" y="23" width="1440" height="877" />
